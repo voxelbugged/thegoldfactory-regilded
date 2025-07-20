@@ -1,4 +1,4 @@
-The Gold Factory Regilded
+The Gold Factory: Regilded
 ==============
 
 Subreddit: http://www.reddit.com/r/TGFRegilded
