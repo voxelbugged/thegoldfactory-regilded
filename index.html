@@ -10,32 +10,26 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>BETA - The Gold Factory: Regilded</title>
+	<title>The Gold Factory: Regilded</title>
 	<script type="text/javascript" src="jquery.js"></script>
 	<script type="text/javascript" src="base.js"></script>
 
 	<link rel="stylesheet" type="text/css" href="style.css" media="all" />
-	<link rel="shortcut icon" href="betaicon.png"/>
+	<link rel="shortcut icon" href="icon.png"/>
 
 	<!-- Thanks to /u/Shawnyall and /u/Guildenstern_artist for the favicon! -->
 
 </head>
 <body>
 <div id="storage">
-	Storage:<br>
+	Inventory:<br>
 	<div id="insidestorage">
 		<span id="gold-bar">0</span> gold bar(s)<br>
 		<span id="ib"><span id="iron-bar">0</span> iron bar(s)</span><br>
-    You have eaten <span class="pizzacount">0 pizzas</span>.<br>
 		<a href="javascript:showstorage();">View inventory</a>
 	</div>
-  Character:
-  <div id="insideequipment">
-  Max health: <span class="maxhealth">100</span><br>
-	Current weapon: <span class="currentsword">None!</span><br>
-  Current offhand: <span class="currentoffhand">None!</span><br>
-  <a href="javascript:showequipment();">View equipment</a>
-  </div>
+	You have eaten <span class="pizzacount">0 pizzas</span>.<br>
+	Current weapon: <span class="currentsword">none</span><br>
   <span class="travel hidden"><hr><a href="javascript:travel();">Fast Travel</a></span>
 </div>
 
@@ -47,35 +41,10 @@
 <div id="insidestorage">
 	<div id="otheritems"></div>
 </div>
-<br>
+<br><br>
 <input type="button" value="Close this window" onclick="closemessage()" class="mediumbutton">
 </div>
-<div class="alert alert-equipment">
-  <b>Equipment</b><br>
-  <div id="equipmentsection-char">
-  <pre>
-     O  
-    /|\   <b class="username">You</b>
-     |    <span class="userdesc">"This is you."</span>
-    / \</pre>
-  </div>
-  <div id="equipmentsection-stats">
-  Max health: <span class="maxhealth">100</span><br>
-	Current weapon: <span class="currentsword">None!</span><br>
-  Current offhand: <select name="offhands" id="offhands">
-  </select>
-  </div>
-  <div id="equipmentsection-bottom">
-  <hr>
-  Offhand description: <span id="offhanddescription">None!</span>
-  <hr>
-  Your weapon's damage is <span class="damagedisplay">20</span>.<br>
-  Your weapon's attack speed is <span class="attackspeeddisplay">3</span> seconds.<br>
-  Your weapon's lifesteal is <span class="lifestealdisplay">2</span> HP.
-  </div>
-  <br>
-  <input type="button" value="Close this window" onclick="closemessage()" class="mediumbutton">
-</div>
+
 <div class="alert alert-gold-factory">
 <b>The Gold Factory</b><br>
 Status: You work here, and you are getting 1 gold bar per second as your salary.
@@ -86,15 +55,12 @@ Status: You work here, and you are getting 1 gold bar per second as your salary.
 <div class="alert alert-theshop">
 <b>The Shop</b><br>
 What do you want to buy, fellow adventurer?<br><br>
-<input type="button" value="A Shovel" onclick="buy('shovel',1)" class="buy-shovel smallbutton" disabled> (50 gold bars)<br>
+<input type="button" value="A shovel" onclick="buy('shovel',1)" class="buy-shovel smallbutton" disabled> (50 gold bars)<br>
 <input type="button" value="Pizza" onclick="buy('pizza',1)" class="buy-pizza smallbutton" disabled> (20 gold bars)<br>
 <input type="button" value="20 Pizzas" onclick="buy('pizza',20)" class="buy-pizza-20 smallbutton" disabled> (400 gold bars)<br>
-<span class="wooden-sword-shop"><input type="button" value="Wooden Sword" onclick="buy('wooden sword',1)" class="buy-wooden-sword smallbutton" disabled> (50 gold bars)<br></span>
-<span class="stone-sword-shop" style="display:none;"><input type="button" value="Stone Sword" onclick="buy('stone sword',1)" class="buy-stone-sword smallbutton" disabled> (500 gold bars)<br></span>
-<span class="no-sword-upgrade" style="display:none;">Sorry, the stone sword is the best sword I have.<br></span>
-<span class="wooden-shield-shop"><input type="button" value="Wooden Shield" onclick="buyshield(100)" class="buy-wooden-shield smallbutton"> (100 gold bars - don't forget to equip it!)</span>
-<span class="stone-shield-shop" style="display:none;"><input type="button" value="Stone Shield" onclick="buyshield(1000)" class="buy-stone-shield smallbutton"> (1,000 gold bars)</span>
-<span class="no-shield-upgrade" style="display:none;">Sorry, the stone shield is the best shield I have.</span>
+<span class="wooden-sword-shop"><input type="button" value="Wooden sword" onclick="buy('wooden sword',1)" class="buy-wooden-sword smallbutton" disabled> (50 gold bars)</span>
+<span class="stone-sword-shop" style="display:none;"><input type="button" value="Stone sword" onclick="buy('stone sword',1)" class="buy-stone-sword smallbutton" disabled> (500 gold bars)</span>
+<span class="no-sword-upgrade" style="display:none;">Sorry, the stone sword is the best sword I have.</span>
 <br><br>
 <input type="button" value="Close this window" onclick="closemessage()" class="mediumbutton">
 </div>
@@ -103,14 +69,11 @@ What do you want to buy, fellow adventurer?<br><br>
 <b>Another Shop</b><br>
 Hi! Welcome to my shop! :D<br><br>
 <input type="button" value="10 Iron Bars" onclick="goldbar-=100; ironbar+=10; checkthings();" class="buy-iron-bar smallbutton" disabled> (100 gold bars)<br>
-<input type="button" value="100 Pizzas" onclick="buy('pizza',100)" class="buy-pizza-20 smallbutton" disabled> (2,000 gold bars)<br>
+<input type="button" value="100 Pizzas" onclick="buy('pizza',100)" class="buy-pizza-20 smallbutton" disabled> (2000 gold bars)<br>
 <input type="button" value="Health Potion" onclick="buy('health potion',1)" class="buy-health-potion smallbutton"> (50 gold bars)<br>
-<span class="iron-sword-shop"><input type="button" value="Iron Sword" onclick="buy('iron sword',1)" class="buy-iron-sword smallbutton" disabled> (1,000 gold bars)</span>
-<span class="diamond-sword-shop" style="display:none;"><input type="button" value="Diamond Sword" onclick="buy('diamond sword',1)" class="buy-diamond-sword smallbutton" disabled> (3,000 gold bars)</span>
-<span class="no-sword-upgrade-2" style="display:none;">Sorry, I have no more swords :(<br></span>
-<span class="iron-shield-shop"><input type="button" value="Iron Shield" onclick="buyshield(2000)" class="buy-iron-shield smallbutton"> (2,000 gold bars)</span>
-<span class="diamond-shield-shop" style="display:none;"><input type="button" value="Diamond Shield" onclick="buyshield(6000)" class="buy-diamond-shield smallbutton"> (6,000 gold bars)</span>
-<span class="no-shield-upgrade-2" style="display:none;">Sorry, I have no more shields :(</span>
+<span class="iron-sword-shop"><input type="button" value="Iron sword" onclick="buy('iron sword',1)" class="buy-iron-sword smallbutton" disabled> (1000 gold bars + stone sword)</span>
+<span class="diamond-sword-shop" style="display:none;"><input type="button" value="Diamond sword" onclick="buy('diamond sword',1)" class="buy-diamond-sword smallbutton" disabled> (3000 gold bars)</span>
+<span class="need-iron" style="display:none;">Sorry, I have no more swords :(</span>
 <br><br>
 <input type="button" value="Close this window" onclick="closemessage()" class="mediumbutton">
 </div>
@@ -458,7 +421,7 @@ ____________<span class="click old-machine unselectable" title="An old machine">
 </div>
 </div>
 
-<div id="version"><img src="betaicon.png">&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:changelog();" class="leversion"></a> - TGF: Regilded by voxelbugged - <a href="https://gamehelp16.github.io/thegoldfactory/">Original game</a> by gamehelp16</div>
+<div id="version"><img src="icon.png">&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:changelog();" class="leversion"></a> - TGF: Regilded by voxelbugged - <a href="https://gamehelp16.github.io/thegoldfactory/">Original game</a> by gamehelp16</div>
 <div id="credits">
 <a href="javascript:showdec2021msg();" class="dec2021msg">gamehelp16's Dec 2021 Message</a> - <a href="https://discord.gg/nMEEVWtwXS" target="_blank" class="discord">Discord</a> - <a href="https://www.reddit.com/r/TGFRegilded/" target="_blank" class="reddit">Subreddit</a> - <a href="javascript:showcredits();">Credits</a> - <a href="javascript:save();">Save Options</a> - <a href="javascript:toggle();">Change Theme</a>
 </div>
@@ -563,29 +526,6 @@ ___________`"_____G..m-"^m`m'_______
 
 
 
-</pre>
-<pre class="building endlessgate hidden" title="The Gate of Endless Glory">
-                           {} {}
-                   &  !  ! II II !  !  @
-                !  I__I__I_II II_I__I__I  !
-                I_/|_____|__| |__|_____|\_I
-             ! /|_/|     |  | |  |     |\_|\ !       
- .--.        I//   |     |  | |  |     |   \\I        .--.
-/-   \    # /|/    |     |  | |  |     |    \|\ $    /=   \
-\=__ /    I//|     |     |  | |  |     |     |\\I    \-__ /
- }  {  ! /|/ |     |     |  | |  |     |     | \|\ !  }  {
-{____} I//   |     |     |  | |  |     |     |  |\\I {____}
- |= |=/|/    |     |     |  | |  |     |     |    \|\=|  |
- |  ||/|_____|_____|_____|__| |__|_____|_____|_____|\||- |
- |- ||-|-----|-----|-----|--| |--|-----|-----|-----|-||= |
- |  || |     |     |     |  | |  |     |     |     | ||  |
- |= || |     |     |     |  | |  |     |     |     | ||= |
- |- || |     |     |     |  | |  |     |     |     | ||= |
- |- || |     |     |     |  | |  |     |     |     | ||- |
- |  ||_|_____|_____|_____|__| | _|_____|_____|_____|_||  |
- |= ||-|-----|-----|-----|--| | -|-----|-----|-----|-||- |
- || || |     |     |     |  | |  |     |     |    ||=||  |
- |~~||^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^||~~|
 </pre>
 <br><br><br><br><br><br><br><div style="height:30px;"></div>
 <div class="road unselectable">_</div>

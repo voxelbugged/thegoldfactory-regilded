@@ -411,7 +411,7 @@ input {
  */
 
 button,
-input[type="button"]:enabled,
+input[type="button"]:not([disabled]),
 input[type="reset"],
 input[type="submit"] {
     cursor: pointer; /* 1 */
@@ -522,7 +522,6 @@ body {
 #wrapper {
 	position:relative;
 	top:0;
-	min-width:2000px;
 }
 body.wob {
 	background:#15151b;
@@ -593,7 +592,6 @@ pre.building {
 	margin-left:20px;
 	cursor:pointer;
 	user-select: none;
-	overflow:auto;
 }
 body.wob pre.building {
 	background:#15151b;
@@ -670,7 +668,7 @@ pre.none {
 	width:100%;
 }
 #realworld .road {
-	top:-40px;
+	top:-34px;
 }
 body.wob .road {
 	border-bottom:1px solid white;
@@ -720,16 +718,20 @@ body.wob input[type=button]:disabled {
 body.wob input[type=button]:disabled {
 	background:rgba(255,255,255,.3);
 }*/
-input[type=button]:enabled:hover {
+input[type=button]:not([disabled]):hover {
 	cursor:pointer;
 	padding:5px;
 	background:rgba(0,0,0,.1);
 	border:1px solid black;
 	border-width: 1px 2px 2px 1px;
 }
-input[type=button]:enabled:active
+input[type=button]:not([disabled]):active
 {
 	background:rgba(0,0,0,.15);
+}
+body.wob input[type=button]:not([disabled]):active
+{
+	background:rgba(255,255,255,.15);
 }
 input[type=button][disabled]
 {
@@ -739,15 +741,11 @@ body.wob input[type=button][disabled]
 {
 	background: rgba(255,255,255,.1);
 }
-body.wob input[type=button]:enabled:hover {
+body.wob input[type=button]:not([disabled]):hover {
 	padding:5px;
 	background:rgba(255,255,255,.1);
 	border: 1px solid white;
 	border-width: 1px 2px 2px 1px;
-}
-body.wob input[type=button]:enabled:active
-{
-	background:rgba(255,255,255,.15);
 }
 .banner-plane {
 	position:absolute;
@@ -797,27 +795,15 @@ body.wob input[type=button]:enabled:active
 	border-bottom:1px solid black;
 	background:white;
 	z-index:999999;
-	min-width:10%;
 }
 body.wob #storage {
 	background:#15151b;
 	border-left:1px solid white;
 	border-bottom:1px solid white;
 }
-#insidestorage, #insideequipment {
+#insidestorage {
 	padding-left:20px;
-}
-#equipmentsection-char {
-	width:50%;
-	float: left;
-}
-#equipmentsection-stats {
-	width:50%;
-	float: left;
-}
-#equipmentsection-bottom {
-	width:100%;
-	clear:both;
+	padding-right:50px;
 }
 pre[class^=dig-step-] {
 	cursor:pointer;
@@ -1006,40 +992,36 @@ body.wob pre [type=button] {
 }
 #realworld {
 	display:none;
-	min-width:2000px;
 }
 .theportal {
 	position:absolute;
 	left:75px;
+	margin-top: 6px;
 	cursor:pointer;
 	background:white;
 	z-index:99999;
 }
 .thefox {
 	position:absolute;
-	left:200px;
+	left:250px;
+	margin-top: 6px;
 	cursor:pointer;
 	background:white;
 	z-index:9999;
 }
 .thehouse {
 	position:absolute;
-	left:300px;
+	left:550px;
+	margin-top: 6px;
 	cursor:pointer;
 	background:white;
 	z-index:9999;
 }
 .sand {
 	position:absolute;
-	left:400px;
-	cursor:pointer;
-	background:white;
-	z-index:9999;
-}
-.endlessgate {
-	position:absolute;
-	left:450px;
-	margin-top: -180px;
+	left:850px;
+	margin-top: 6px;
+	width:810px;
 	cursor:pointer;
 	background:white;
 	z-index:9999;
