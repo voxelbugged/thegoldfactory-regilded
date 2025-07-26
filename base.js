@@ -22,7 +22,6 @@ var golddivisor = 200;
 var secondrealm = false;
 var instasused = 0;
 var battleid = 1;
-var winningbattle = false;
 var pizzacollected;
 var changecredits = true;
 var ironcounter = 0;
@@ -32,7 +31,7 @@ var randomnames2 = ["dor", "mir", "rin", "din", "fist"];
 var przydomki = ["Brave", "Strong", "Kinda Dumb", "Almighty", "Great"];
 var leagues = ["Wooden Rat", "Stone Thief", "Iron Golem", "Golden Ghost", "Diamond Devil", "Emerald Professor", "Glorious Champion"];
 var spentonenchant = 0;
-
+var winningid = 0;
 function randomnumber(min,max) {
 	return Math.floor(Math.random()*(max-min)+min);
 }
@@ -772,10 +771,10 @@ $(document).ready(function() {
 		if(passworms) {
 			closemessage();
 			if(skill!="none") {
-				makealert("training-center","Training Center","Welcome to the training center!<br>Here, you can test your abilities or learn a new one.<br><br><input type=\"button\" value=\"Test your skill\" onclick=\"testskill()\" class=\"training-button mediumbutton\"> (100 Gold Bars)<br><input type=\"button\" value=\"Upgrade your skill\" onclick=\"upgradeskill()\" class=\"upgrade-skill mediumbutton\">",true)
+				makealert("training-center","Training Center","Welcome to the training center!<br>Here, you can test your abilities or learn a new one.<br>Your temporary damage boost from training is currently "+additionalattack+".<br><br><input type=\"button\" value=\"Test your skill\" onclick=\"testskill()\" class=\"training-button mediumbutton\"> (100 Gold Bars)<br><input type=\"button\" value=\"Upgrade your skill\" onclick=\"upgradeskill()\" class=\"upgrade-skill mediumbutton\">",true)
 			}
 			else {
-				makealert("training-center","Training Center","Welcome to the training center!<br>Here, you can test your abilities or learn a new one.<br><br><input type=\"button\" value=\"Test your skill\" onclick=\"testskill()\" class=\"training-button mediumbutton\"> (100 Gold Bars)<br><input type=\"button\" value=\"Learn a new skill\" onclick=\"learnnewskill()\" class=\"new-skill mediumbutton\">",true)
+				makealert("training-center","Training Center","Welcome to the training center!<br>Here, you can test your abilities or learn a new one.<br>Your temporary damage boost from training is currently "+additionalattack+".<br><br><input type=\"button\" value=\"Test your skill\" onclick=\"testskill()\" class=\"training-button mediumbutton\"> (100 Gold Bars)<br><input type=\"button\" value=\"Learn a new skill\" onclick=\"learnnewskill()\" class=\"new-skill mediumbutton\">",true)
 			}
 		}
 	});
@@ -1271,7 +1270,7 @@ function testskill() {
 		hpdivide10=Math.ceil(hp/10);
 		closemessage();
 		battle=makebattle(battleid,"Training Robot",hp+hpdivide10,hp+hpdivide10,"Short ranged laser!",basepower+Math.ceil(basepower/10),"A training robot",2,power,hp,hp,currentsword,false,"training");
-		html="<div class=\"alert alert-training\"><b>Test your skill!</b><br>Let's see how strong you are!<br><br>"+battle.html+"</div>";
+		html="<div class=\"alert alert-training\"><b>Test your skill!</b><br>Let's see how strong you are!<br>Winning will give you a temporary damage boost.<br><br>"+battle.html+"</div>";
 		$("#otheralerts").append(html);
 		battle.init();
 		$(".alert-training:last").fadeIn("fast");
@@ -2208,7 +2207,7 @@ function getleague() {
 function endlessgate() {
 	closemessage();
 	powerhp();
-	multiplier = 1.1**endlesswave;
+	multiplier = 1.05**endlesswave;
 	ratio = (0.5 - Math.random())/5;
 	gladiatorname = randomnames1[Math.floor(Math.random()*randomnames1.length)] + randomnames2[Math.floor(Math.random()*randomnames2.length)] + " the " + przydomki[Math.floor(Math.random()*przydomki.length)];
 	battle=makebattle(battleid,gladiatorname,Math.round(2000 * multiplier * (1+ratio)),Math.round(2000 * multiplier * (1+ratio)),"Standard-issue Sword",Math.round(100 * multiplier * (1-ratio)),"This is not you.",0,power,hp,hp,currentsword,false,"vs-endless-gate");
@@ -2585,15 +2584,14 @@ output="<table id=\"battle-"+id+"\">"+output2+"</table><br><div class=\"buttons-
 <hr class=\"potion-separator-"+id+"\"><input type=\"button\" value=\"Flee!\" class='smallbutton flee-button' onclick=\"closemessage(); battle_ended();\">\n\
 <input type=\"button\" value=\"Toggle auto-attack\" class='mediumbutton flee-button' onclick=\"toggleautoattack("+id+");\">";
 	if(hp<=0) {
-		if(winningbattle == false)
-			{
-				winningbattle = true;
-				setTimeout(function(){winbattle(param,id);},2000);
-			}
+		if(id != winningid) {
+			setTimeout(function(){winbattle(param,id);},1000);
+			winningid=id;
+		}
 	}
 	else if(myhp<=0) {
 		//lose
-		setTimeout(function(){closemessage(); battle_ended();},2000);
+		setTimeout(function(){closemessage(); battle_ended();},1000);
 	}
 	else {
 		instasused = 0;
@@ -2690,9 +2688,9 @@ function enemyattack(id,damage) {
 								thenewhp=enemyhealthpoint(true,0);
 								$(".enemy-"+id+"-hp").html("0");
 								$(".button-attack-"+id).attr("disabled",true);
-								if(winningbattle == false) {
-									winningbattle = true;
-									setTimeout(function(){winbattle(theparam(false,0),id);},0);
+								if(id!=winningid){
+									setTimeout(function(){winbattle(theparam(false,0),id);},1000);
+									winningid = id;
 								}
 								return;
 							}
@@ -2750,9 +2748,9 @@ function attackenemy(id,power,hp,param,mymaxhp) {
 	}
 	if(enemyhealthpoint(false,0)<=0) {
 		enemyattack("clear",0);
-		if(winningbattle == false) {
-			winningbattle = true;
-			setTimeout(function(){winbattle(param,id);},0);
+		if(id != winningid){
+			setTimeout(function(){winbattle(param,id);},1000);
+			winningid = id;
 		}
 	}
 	else {
@@ -2896,9 +2894,9 @@ function usetheskill(id) {
 			$(".alert").shake();
 			setTimeout(function() {
 				$(".thunder-"+id).css("opacity","0");
-				if(enemyhealthpoint(false,0)<=0 && winningbattle == false) {
-					winningbattle = true;
-					setTimeout(function(){winbattle(theparam(false,0),id);},0);
+				if(enemyhealthpoint(false,0)<=0 && id != winningid) {
+					setTimeout(function(){winbattle(theparam(false,0),id);},1000);
+					winningid = id;
 				}
 			},300);
 			skilldelay(id,mindelay);
@@ -2906,6 +2904,7 @@ function usetheskill(id) {
 		else {
 			$(".player-"+id).css("opacity","0.5");
 			isinvuln(true,true);
+			clearTimeout(invulnerabilitydelay);
 			invulnerabilitydelay=setTimeout(function() {
 				$(".player-"+id).css("opacity","1");
 				isinvuln(true,false);
@@ -2942,8 +2941,9 @@ function usepotion(pid,id,havecooldown=true) {
 			}
 			enemyhealthpoint(true,hp);
 			$(".enemy-"+id+"-hp").html(hp.toLocaleString("en"));
-			if(enemyhealthpoint(false,0)<=0) {
-				setTimeout(function(){winbattle(theparam(false,0),id);},0);
+			if(enemyhealthpoint(false,0)<=0 && id != winningid) {
+				setTimeout(function(){winbattle(theparam(false,0),id);},1000);
+				winningid = id;
 			}
 		}
 		else if(pid==13) {
@@ -3083,7 +3083,6 @@ function theenemyascii(set,asciiartno) { if(!set) { return theasciiartno; } else
 function theenemyname123(set,enemyname) { if(!set) { return theenemyname; } else { theenemyname=enemyname; } }
 function winbattle(param,id) {
 	$(".flee-button").attr("disabled",true);
-	setTimeout(function() {winningbattle = false;}, 2000);
 	myfinalhp=myhealthpoint(false,0);
 	myhealthpoint(true,hp);
 	battle_ended();
@@ -3222,6 +3221,7 @@ scroll='\n\
 		closemessage();
 		reward=Math.ceil(enemyhealthpoint2(false,0)/10);
 		makealert("win-vs-golem","Goodbye, Golem!","You killed the golem, and it shattered into "+reward+" iron bars!<br><br><input type='button' value=\"Kill more golems!\" class='mediumbutton' onclick='battlevsgolems()'>",true);
+		ironbar+=reward;
 	}
 	else if(param=="vs-shark"){
 		closemessage();
