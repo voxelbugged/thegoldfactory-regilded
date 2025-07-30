@@ -592,7 +592,7 @@ function reforge(newtype) {
 		weapontype = newtype;
 		ironbar -= reforgeprice;
 		snacks("Success! You now wield the "+weapontype+".");
-		if(newtype="Maul"){
+		if(newtype=="Maul"){
 			offhand="none";
 		}
 	}
@@ -2675,7 +2675,6 @@ function enemyattack(id,damage) {
 					// actually perform the attack
 					// this timer is set to coincide with the completion of the above animate() calls [200ms]
 					lagipusing=false;
-					if(isinvuln(false,0)==false) {
 						if(enemyconfused(false,0)) {
 							enemyhp=enemyhealthpoint(false,0);
 							enemyhp-=damage;
@@ -2696,7 +2695,7 @@ function enemyattack(id,damage) {
 							}
 
 						}
-						else {
+						else if(isinvuln(false,0)==false) {
 							myhp=myhealthpoint(false,0);
 							absorb=helmet+chestplate+pants+boots;
 							if(offhand=="Shield"){
@@ -2704,7 +2703,6 @@ function enemyattack(id,damage) {
 							}
 							myhp-=damage-Math.round(damage*(absorb/100));
 							myhealthpoint(true,myhp);
-						}
 					}
 					if(myhealthpoint(false,0)<=0) {
 						myhealthpoint(true,0)
@@ -2920,7 +2918,9 @@ function usetheskill(id) {
 }
 function usepotion(pid,id,havecooldown=true) {
 	if(items[pid].owned>=1 || !havecooldown) {
-		items[pid].owned--;
+		if(havecooldown){
+			items[pid].owned--;		
+		}
 		checkpotionsbutton(id);
 		thepotionname=items[pid].name.replace(" potion","");
 		thepotionname=thepotionname.charAt(0).toUpperCase() + thepotionname.slice(1);
@@ -3792,6 +3792,7 @@ function removeBattle(id)
 function snacks(tosnack){
 	new SnackBar({
     	message: tosnack,
-		position: "tm"
+		position: "tm",
+		fixed: true
 	});
 }
