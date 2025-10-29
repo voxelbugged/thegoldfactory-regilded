@@ -4,9 +4,9 @@
     right: 0;
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+    align-items: center;
     max-width: 100%;
-    z-index: 99999;
+    z-index: 999999999;
     overflow: hidden;
 }
 

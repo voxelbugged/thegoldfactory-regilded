@@ -26,9 +26,9 @@ var pizzacollected;
 var changecredits = true;
 var ironcounter = 0;
 var shieldnames = ["Wooden Shield", "Stone Shield", "Iron Shield", "Diamond Shield"];
-var randomnames1 = ["Trog", "Gal", "Fal", "Boro", "Tho"];
-var randomnames2 = ["dor", "mir", "rin", "din", "fist"];
-var przydomki = ["Brave", "Strong", "Kinda Dumb", "Almighty", "Great"];
+var randomnames1 = ["Trog", "Gal", "Fal", "Boro", "Tho", "Dre", "Nir"];
+var randomnames2 = ["dor", "mir", "rin", "din", "fist", "mu", "moll"];
+var przydomki = ["Brave", "Strong", "Kinda Dumb", "Almighty", "Great", "Alive", "Strange"];
 var leagues = ["Wooden Rat", "Stone Thief", "Iron Golem", "Golden Ghost", "Diamond Devil", "Emerald Professor", "Glorious Champion"];
 var spentonenchant = 0;
 var winningid = 0;
@@ -949,10 +949,10 @@ man="\n\
 		}
 	});
 	$(".nametag").click(function() {
-		makealert("name-tag","Name Tag","You found a name tag!<br>You can now change your name and description in battles!<br><br>Name: <input type='text' id='yourname' value='"+theusername+"'><br>Description: <input type='text' id='yourdesc' value='"+theuserdesc+"'><br><br>WARNING: Inserting an extremely long name/description or adding some wild characters may corrupt your save file!",true);
+		makealert("name-tag","Name Tag","You found a name tag!<br>You can now change your name and description in battles!<br><br>Name: <input type='text' id='yourname' maxlength='32' value='"+theusername+"'><br>Description: <input type='text' id='yourdesc' maxlength='32' value='"+theuserdesc+"'>",true);
 		namedesc=setInterval(function() {
-			theusername=$("#yourname").val();
-			theuserdesc=$("#yourdesc").val();
+			theusername=HtmlSanitizer.SanitizeHtml($("#yourname").val().substring(0, 32));
+			theuserdesc=HtmlSanitizer.SanitizeHtml($("#yourdesc").val().substring(0, 32));
 		},100);
 	});
 	$(".chest-dig").click(function() {
@@ -2201,7 +2201,8 @@ function getleague() {
 		return leagues[Math.floor(endlesswave/5)];
 	}
 	else{
-		return leagues[leagues.length-1];
+		number = Math.floor(endlesswave/5) - 5;
+		return leagues[leagues.length-1] + " " + romanize(number);
 	}
 }
 function endlessgate() {
@@ -2263,7 +2264,7 @@ function dosave(param) {
 	else if(param=="autolocalstorage") {
 
 		if(typeof(Storage) === "undefined") {
-			snacks('Update your browser, dammit, it\'s 2024 and you still don\'t have local storage! How?');
+			snacks('Update your browser, dammit, it\'s 2025 and you still don\'t have local storage! How?');
 		}
 
 		localStorage.thegoldfactorygamesave=savegame();
@@ -2332,8 +2333,8 @@ function loadgame(savecode) {
 		chestplate=parseFloat(savecode[37]);
 		pants=parseFloat(savecode[38]);
 		boots=parseFloat(savecode[39]);
-		theusername=savecode[40];
-		theuserdesc=savecode[41];
+		theusername=HtmlSanitizer.SanitizeHtml(savecode[40].substring(0, 32));
+		theuserdesc=HtmlSanitizer.SanitizeHtml(savecode[41].substring(0, 32));
 		cheststep=parseInt(savecode[42]);
 		searchtimes=parseInt(savecode[43]);
 		shovelbroken=parseInt(savecode[44]);
@@ -2344,7 +2345,7 @@ function loadgame(savecode) {
 		talk=parseInt(savecode[49]);
 		wob=(savecode[50] === "true");
 		buyfactory=(savecode[51] === "true");
-		skill=savecode[52];
+		skill=HtmlSanitizer.SanitizeHtml(savecode[52]);
 		skilllvl=parseInt(savecode[53]);
 		additionalattack=parseInt(savecode[54]);
 		clickcloudcount=parseInt(savecode[55]);
@@ -2354,7 +2355,7 @@ function loadgame(savecode) {
 		airplanecountdown=parseInt(savecode[59]);
 		digcountdown=parseInt(savecode[60]);
 		digstep=parseInt(savecode[61]);
-		currentsword=savecode[62];
+		currentsword=HtmlSanitizer.SanitizeHtml(savecode[62]);
 		passthief=(savecode[63] === "true");
 		passworms=(savecode[64] === "true");
 		passgate=(savecode[65] === "true");
@@ -3317,7 +3318,7 @@ function hurrydig()
 }
 /* POTIONS MAKING SYSTEM */
 
-var validitems = [7, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
+var validitems = [7, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 26];
 
 function updateitemlist() {
 	$("#itemlist").html('');
@@ -3452,7 +3453,7 @@ function mixitems() {
 	let cldr = thecauldron("return", 0, 0);
 	let madeitem = true;
 	let qty = {};
-	let allIds = ["goldbar", "ironbar", "7", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"];
+	let allIds = ["goldbar", "ironbar", "7", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "26"];
 
 	for (let id of allIds) {
 		qty[id] = getIngredientQuantity(cldr, id);
@@ -3593,7 +3594,7 @@ function ciphercode() {
 		codetocipher="43 24 33 33 15 43 31 34 43 13 23 15 33";
 	}
 	else if(cipherstep==7) {
-		codetocipher="towiiag g se&nbsp;&nbsp;&nbsp;rir,oaoan&nbsp;&nbsp;&nbsp;ft ofo srtod tddyi ot mdy lugelelmwon foemsthiuaa ttclntclga&nbsp;&nbsp;bhhs";
+		codetocipher="tg t  lot ,d tm og t twdh odfcoywsbitln ieao n ti h otfmu odfcoyi h olelarau gmgaisesaslarner";
 	}
 	else if(cipherstep==8) {
 		codetocipher="Li4uLiAuLS0tIC4uLiAuLi0gLi0uLiAuLSAuLi0gLi0tIC8gLiAuLi4gLS4<br>tLiAuLS0gLS4tIC8gLi4uLiAuLS0gLi0tLSAtLi4tIC4tLSAuLi0gLi0uLg==";
@@ -3770,7 +3771,7 @@ function checkcipher() {
 }
 
 function gethint() {
-	let hints = ["Hint: ABC, Its easy as 123!", "Hint: The Romans would be furious with you!", "Hint: Save Our Souls!", "Hint: You use this to type!", "Hint: Who even needs vision, anyway?", "Hint: (8*4) - 16 + ((24/2) * 4)", "Hint: Square coordinates!", "Hint: You know the rails and the fence? Combine them and keep going! There may be multiple stops.", "Hint: Use everything you've learned! You've got this!"];
+	let hints = ["Hint: ABC, Its easy as 123!", "Hint: The Romans would be furious with you!", "Hint: Save Our Souls!", "Hint: You use this to type!", "Hint: Who even needs vision, anyway?", "Hint: (8*4) - 16 + ((24/2) * 4)", "Hint: Square coordinates!", "Hint: You know the rails and the fence? Combine them and keep going!", "Hint: Use everything you've learned! You've got this!"];
 	snacks(hints[cipherstep]);
 }
 
@@ -3796,3 +3797,15 @@ function snacks(tosnack){
 		fixed: true
 	});
 }
+
+function romanize(num) {
+  var lookup = {M:1000,CM:900,D:500,CD:400,C:100,XC:90,L:50,XL:40,X:10,IX:9,V:5,IV:4,I:1},roman = '',i;
+  for ( i in lookup ) {
+    while ( num >= lookup[i] ) {
+      roman += i;
+      num -= lookup[i];
+    }
+  }
+  return roman;
+}
+
