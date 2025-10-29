@@ -401,6 +401,9 @@ function updatestatus() {
 	$(".lifestealdisplay").html(enchant_life*2);
 	armorinfo = "";
 	skillinfo = "None!";
+	skilldesc = "";
+	skilleffect = "";
+	skillcooldown = "";
 	if(chestplate+boots+pants+helmet==0){
 		armorinfo="None!";
 	}
@@ -408,13 +411,22 @@ function updatestatus() {
 		armorinfo=chestplate+boots+pants+helmet + "% damage absorbed.";
 	}
 	if(skill == "invuln") {
-		skillinfo="Invulnerability";
+		skillinfo="Invulnerability (Level "+skilllvl.toLocaleString("en")+")";
+		skilldesc="<br>Description: Makes you temporarily invulnerable!";
+		skilleffect="<br>Duration: "+(3+skilllvl).toLocaleString("en")+" seconds.";
+		skillcooldown="<br>Cooldown: "+(20+3+skilllvl).toLocaleString("en")+" seconds.";
 	}
 	if(skill == "thunder") {
-		skillinfo="Thunder Bolt";
+		skillinfo="Thunder Bolt (Level "+skilllvl.toLocaleString("en")+")";
+		skilldesc="<br>Description: Deals instant damage to the enemy. Simple!";
+		skilleffect="<br>Damage: "+(20+skilllvl*10).toLocaleString("en")+" damage.";
+		skillcooldown="<br>Cooldown: 20 seconds.";
 	}
 	$("#armorinfo").html(armorinfo);
 	$("#skillinfo").html(skillinfo);
+	$("#skilldesc").html(skilldesc);
+	$("#skilleffect").html(skilleffect);
+	$("#skillcooldown").html(skillcooldown);
 }
 function checkitem() {
 	for(i=0;i<items.length;i++) {
@@ -1346,7 +1358,7 @@ function makekey() {
 }
 function learnnewskill() {
 	closemessage();
-	makealert("choose-skill","Choose a skill","Pick the skill that you want to learn.<br>Choose wisely, because changing it is expensive!<br><br><input type=\"button\" class='mediumbutton' value=\"Thunder Bolt\" onclick=\"chooseskill(1)\"><br><input type=\"button\" value=\"Invulnerability\" class='mediumbutton' onclick=\"chooseskill(2)\">",true)
+	makealert("choose-skill","Choose a skill","Pick the skill that you want to learn.<br>Choose wisely, because changing it is expensive!<br><br><input type=\"button\" class='mediumbutton' value=\"Thunder Bolt\" onclick=\"chooseskill(1)\">Deals lots of instant damage to the enemy!<br><input type=\"button\" value=\"Invulnerability\" class='mediumbutton' onclick=\"chooseskill(2)\">Makes you temporarily invulnerable!",true)
 }
 function chooseskill(type) {
 	closemessage();
@@ -2660,7 +2672,6 @@ function enemyattack(id,damage) {
 		//clearTiemout(asdasdf);
 	}
 	else {
-		$(".button-health-"+id).attr("onclick","drinkhealthpotion("+id+","+myhealthpoint(false,0)+")");
 		if(myhealthpoint(false,0)<=0) {
 			setTimeout(function(){closemessage(); battle_ended();},0);
 			//clearTiemout(asdasdf);
@@ -2736,7 +2747,6 @@ function enemyattack(id,damage) {
 				},200);
 			}
 		}
-		$(".button-health-"+id).attr("onclick","drinkhealthpotion("+id+","+myhealthpoint(false,0)+")");
 	}
 }
 function attackenemy(id,power,hp,param,mymaxhp) {
@@ -2748,19 +2758,19 @@ function attackenemy(id,power,hp,param,mymaxhp) {
 	if(enemyhealthpoint(false,0)<=0) {
 		enemyattack("clear",0);
 		if(id != winningid){
+			battlestop(true, true);
+			stop_battle_timers();
 			setTimeout(function(){winbattle(param,id);},1000);
 			winningid = id;
 		}
 	}
 	else {
 		if(id>0) {
-			myhp=myhealthpoint(false,0);
 			myhp+=enchant_life*2;
 			powerhp();
 			if(myhp>mymaxhp) {
 				myhp=mymaxhp;
 			}
-			myhealthpoint(true,myhp);
 			$(".player-"+id+"-hp").html(myhp.toLocaleString("en"));
 			playerisattacking=true;
 			attackdelay(id,mindelay);
@@ -2866,15 +2876,13 @@ function drinkhealthpotion(id, mymaxhp) {
 		items[7].owned-=1;
 		checkhealthbutton(id);
 		checkthings();
-		myhp=myhealthpoint(false,0);
-		myhp+=50;
+		myhp+=30;
 		powerhp();
 		if(myhp>mymaxhp) {
 			myhp=mymaxhp;
 		}
-		myhealthpoint(true,myhp);
 		$(".player-"+id+"-hp").html(myhp.toLocaleString("en"));
-		$(".button-health-"+id).attr("onclick","drinkhealthpotion("+id+","+myhp+")");
+		$(".button-health-"+id).attr("onclick","drinkhealthpotion("+id+","+mymaxhp+")");
 		healthdelay(id,mindelay);
 	}
 }
