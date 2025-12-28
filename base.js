@@ -353,7 +353,7 @@ function updatestatus() {
 	offhanddescription = "None!";
 	if(items[3].owned!=1){plural=items[3].plural;}else{plural="";}
 	$(".pizzacount").html(items[3].owned.toLocaleString("en")+" pizza"+plural);
-	$(".maxhealth").html(hp);
+	$(".maxhealth").html(hp.toLocaleString("en"));
 	if(currentsword != "none"){
 		$(".currentsword").html(currentsword.substring(0, currentsword.indexOf('Sword')) + weapontype);
 	}
@@ -439,6 +439,7 @@ function checkitem() {
 			$(".buy-"+itemnamenospace).attr("disabled",true);
 		}
 	}
+	if(goldbar < 2000) { $(".buy-pizza-100").attr("disabled",true); } else { $(".buy-pizza-100").removeAttr("disabled"); }
 	if(goldbar < 400) { $(".buy-pizza-20").attr("disabled",true); } else { $(".buy-pizza-20").removeAttr("disabled"); }
 	if(goldbar < 100) { $(".buy-iron-bar").attr("disabled",true); } else { $(".buy-iron-bar").removeAttr("disabled"); }
 	if(goldbar < 20) { $(".training-button").attr("disabled",true); }else { $(".training-button").removeAttr("disabled"); }
@@ -455,7 +456,7 @@ function checkitem() {
 	if(goldbar < 1000) {$(".buy-stone-shield").attr("disabled", true); } else { $(".buy-stone-shield").removeAttr("disabled"); }
 	if(goldbar < 2000 || shieldlevel < 2) {$(".buy-iron-shield").attr("disabled", true); } else { $(".buy-iron-shield").removeAttr("disabled"); }
 	if(goldbar < 6000) {$(".buy-diamond-shield").attr("disabled", true); } else { $(".buy-diamond-shield").removeAttr("disabled"); }	
-	if(items[4].owned == 0) {$(".buy-iron-sword").attr("disabled", true); } else { $(".buy-iron-sword").removeAttr("disabled"); }
+	if(items[4].owned == 0 || goldbar < 1000) {$(".buy-iron-sword").attr("disabled", true); } else { $(".buy-iron-sword").removeAttr("disabled"); }
 	if(ironbar < 50000) {$(".airplane-button").attr("disabled", true); } else { $(".airplane-button").removeAttr("disabled"); }
 	if(weapontype == "Maul") {$("#offhands").attr("disabled", true); } else { $("#offhands").removeAttr("disabled"); }
 	if(goldbar < skilllvl*skilllvl*500+500) {$(".skill-upgrade-button").attr("disabled", true); } else { $(".skill-upgrade-button").removeAttr("disabled"); }
@@ -2876,7 +2877,7 @@ function drinkhealthpotion(id, mymaxhp) {
 		items[7].owned-=1;
 		checkhealthbutton(id);
 		checkthings();
-		myhp+=30;
+		myhp+=35;
 		powerhp();
 		if(myhp>mymaxhp) {
 			myhp=mymaxhp;
@@ -3559,7 +3560,7 @@ function mixitems() {
 
 function makebosshappy() {
 	closemessage();
-	makealert("how-to-make-boss-happy","Make your boss happier","To make him happier and get some extra gold bars, you can do these things:<br><br><input type='button' value='Kill some rats that sometimes enter the factory at night' onclick='killrats()'><br><input type='button' value='Help him decipher messages' onclick='ciphercode()'>",true);
+	makealert("how-to-make-boss-happy","Make your boss happier","To make him happier and get some extra gold bars, you can do these things:<br><br><input type='button' class='bigbutton' value='Kill some rats that enter the factory' onclick='killrats()'><br><input type='button' class='bigbutton' value='Help him decipher messages' onclick='ciphercode()'>",true);
 }
 function killrats() {
 	if(items[2].owned==0) {
@@ -3602,7 +3603,7 @@ function ciphercode() {
 		codetocipher="43 24 33 33 15 43 31 34 43 13 23 15 33";
 	}
 	else if(cipherstep==7) {
-		codetocipher="tg t  lot ,d tm og t twdh odfcoywsbitln ieao n ti h otfmu odfcoyi h olelarau gmgaisesaslarner";
+		codetocipher="tg t &nbsp;lot ,d tm og t twdh odfcoywsbitln ieao n ti h otfmu odfcoyi h olelarau gmgaisesaslarner";
 	}
 	else if(cipherstep==8) {
 		codetocipher="Li4uLiAuLS0tIC4uLiAuLi0gLi0uLiAuLSAuLi0gLi0tIC8gLiAuLi4gLS4<br>tLiAuLS0gLS4tIC8gLi4uLiAuLS0gLi0tLSAtLi4tIC4tLSAuLi0gLi0uLg==";
